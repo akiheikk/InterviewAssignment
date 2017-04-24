@@ -1,6 +1,7 @@
 ﻿using Appccelerate.StateMachine.Machine;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace InterviewAssignment
 {
@@ -36,12 +37,20 @@ namespace InterviewAssignment
 
         public string StateToString(TState state, string separator = ".")
         {
-
-            //Your assignment is here!
-            //Tip: You find state machine hierarchy on States property (or myStates field). 
-            //You should go through the states and print that on what hierarchy path the current state
-            //is found. So if state is Initializing this method should return "Down.Initializing" because
-            //"Initializing" is substate of "Down".
+            foreach (var item in myStates)
+            {
+                if (state.CompareTo(item.Id) == 0)
+                {
+                    StringBuilder str = new StringBuilder(item.ToString());
+                    IState<TState, TEvent> superState = item.SuperState;
+                    while (null != superState)
+                    {
+                        str.Insert(0, superState.ToString() + separator);
+                        superState = superState.SuperState;
+                    }
+                    return str.ToString();
+                }
+            }
             throw new NotImplementedException();
         }
     }
